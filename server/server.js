@@ -39,7 +39,7 @@ app.put('/usuario/:id', function(req, res) {
 });
 
 app.delete('/usuario', function(req, res) {
-    res.json('Post Usuario');
+    res.json('delete Usuario');
 });
 
 
