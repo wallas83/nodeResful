@@ -13,7 +13,7 @@ app.use(bodyParser.json());
 
 
 app.get('/usuario', function(req, res) {
-    res.json('Get Usuario');
+    res.json('Get Usuario local');
 });
 //post crear
 app.post('/usuario', function(req, res) {
@@ -45,5 +45,5 @@ app.delete('/usuario', function(req, res) {
 
 
 app.listen(process.env.PORT, () => {
-    console.log('Escuchando el puerto', process.env.PORT);
+    console.log('Escuchando el puerto local', process.env.PORT);
 });
