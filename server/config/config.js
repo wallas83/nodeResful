@@ -21,7 +21,7 @@ let urlDB;
      urlDB = 'mongodb://localhost:27017/cafe'
     
  }else{
-    urlDB = 'mongodb+srv://wallas:v9z4lsfP4UcV6TpX@cluster0-7nzxp.mongodb.net/cafe'
+    urlDB = process.env.MONGO_URI
     
 }
 
