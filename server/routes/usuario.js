@@ -96,61 +96,46 @@ app.put('/usuario/:id', [verificaToken, verificaAdminRole], function(req, res) {
 
 });
 
-app.delete('/usuario/:id', [verificaToken, verificaAdminRole],(req, res) => {
-    
-    //eliminacion fisica en la base de datos 
 
-    // let id = req.params.id;
-    // Usuario.findByIdAndRemove(id, (err, usuarioBorrado)=> {
-    //     if(err) {
-    //         return res.status(400).json({
-    //             ok: false,
-    //             err
-    //         });
-    //     }
-    //     if(!usuarioBorrado){
-    //         return res.status(400).json({
-    //             ok: false,
-    //             err: {
-    //                 message: 'Usuario no encontrado'
-    //             }    
-            
-    //         });
-    //     }
-    //     res.json({
-    //         ok: true,
-    //         usuario: usuarioBorrado
-    //     });
-    // });
-
-    //eliminacion virtual
+app.delete('/usuario/:id', [verificaToken, verificaAdminRole], function(req, res) {
 
 
     let id = req.params.id;
-    let cambioEstado = {
+
+    // Usuario.findByIdAndRemove(id, (err, usuarioBorrado) => {
+
+    let cambiaEstado = {
         estado: false
-    }
-    Usuario.findByIdAndUpdate(id, cambioEstado,{new: true},(err, usuarioBorrado)=> {
-        if(err) {
+    };
+
+    Usuario.findByIdAndUpdate(id, cambiaEstado, { new: true }, (err, usuarioBorrado) => {
+
+        if (err) {
             return res.status(400).json({
                 ok: false,
                 err
             });
-        }
-        if(!usuarioBorrado){
+        };
+
+        if (!usuarioBorrado) {
             return res.status(400).json({
                 ok: false,
                 err: {
                     message: 'Usuario no encontrado'
-                }    
-            
+                }
             });
         }
+
         res.json({
             ok: true,
             usuario: usuarioBorrado
         });
+
     });
 
+
+
 });
+
+
 module.exports = app;
