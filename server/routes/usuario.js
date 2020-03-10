@@ -5,9 +5,13 @@ const bcrypt = require('bcrypt');
 const _      = require('underscore');
 const Usuario = require('../models/usuario');
 
+const { verificaToken, verificaAdminRole} = require('../middlewares/autenticacion');
 
 
-app.get('/usuario', function(req, res) {
+
+
+app.get('/usuario', verificaToken ,(req, res) => {
+    
     //res.json('Get Usuario local');
     let desde = req.query.desde || 0 ;
     desde = Number(desde);
@@ -24,7 +28,7 @@ app.get('/usuario', function(req, res) {
                             err
                     });
                 }
-                Usuario.count({estado: true},(err,conteo)=>{
+                Usuario.countDocuments({estado: true},(err,conteo)=>{
                     res.json({
                         ok : true,
                         usuarios,
@@ -36,7 +40,7 @@ app.get('/usuario', function(req, res) {
             });
 });
 //post crear
-app.post('/usuario', function(req, res) {
+app.post('/usuario', [verificaToken,verificaAdminRole], (req, res) =>{
     let persona = req.body;
 
     let usuario = new Usuario({
@@ -64,28 +68,35 @@ usuario.save( (err, usuarioDB) => {
 });
 
 //put actualiza
-app.put('/usuario/:id', function(req, res) {
+app.put('/usuario/:id', [verificaToken, verificaAdminRole], function(req, res) {
+    
     let id = req.params.id;
-    let body = _.pick(req.body,['nombre','email','img','role', 'estado']) ;
-    //el new hace que se actualice en la respuesta para el frontEnd el cual se ve en el postman
-    Usuario.findByIdAndUpdate(id, body,{new : true, runValidators : true},(err, usuarioDB) => {
-        
-        if(err) {
+    let body = _.pick(req.body, ['nombre', 'email', 'img', 'role', 'estado']);
+   
+    Usuario.findByIdAndUpdate(id, body, { new: true, runValidators: true }, (err, usuarioDB) => {
+
+      //  console.log('es el usuario en la db',usuarioDB);
+      console.log('es el usuario en la db',err);
+        if (err) {
             return res.status(400).json({
-                    ok: false,
-                    err
+                ok: false,
+                err
             });
         }
-      
+
+       
+
+
         res.json({
-        ok:true,
-        usuario: usuarioDB
-        });        
-    });
+            ok: true,
+            usuario: usuarioDB
+        });
+      
+    })
 
 });
 
-app.delete('/usuario/:id', function(req, res) {
+app.delete('/usuario/:id', [verificaToken, verificaAdminRole],(req, res) => {
     
     //eliminacion fisica en la base de datos 
 
