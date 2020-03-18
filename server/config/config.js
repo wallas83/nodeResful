@@ -41,3 +41,10 @@ let urlDB;
 
 process.env.urlDB = urlDB;
 
+
+//====================
+// google client ID
+//====================
+
+
+process.env.CLIENT_ID = process.env.CLIENT_ID || '49401770103-mg53dq2pdg1d1588k82nfcvltl4sgn1n.apps.googleusercontent.com';
